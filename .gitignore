@@ -6,6 +6,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+bin/*
+.vscode-upload.json
 
 ### STS ###
 .apt_generated
