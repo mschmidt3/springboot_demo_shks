@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import org.slf4j.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/countries")
 public class CountryController {
@@ -136,5 +137,9 @@ public class CountryController {
         return ResponseEntity.ok("resource updated");
     }
 
+    @GetMapping("/region/{name}")
+    public List<Country> byRegion(@PathVariable final String name) {
+        return repository.findAllByRegion(name);
+    }
 
 }
