@@ -35,14 +35,12 @@ public class CountryController {
        } 
        return new ResponseEntity<Country>(elem.get(), HttpStatus.OK); 
     } 
-
-    @DeleteMapping("{id}")
-    public void deleteEntity(@PathVariable Long id){
-       Optional<Country> elem = repository.findById(id); 
-       if(elem.isPresent()) {
-            repository.delete(elem.get());
-       }
+   
+    @DeleteMapping("/{id}")
+    public void deleteElement(@PathVariable final long id) {
+        repository.deleteById(id);
     }
+
     @PostMapping("")
     public ResponseEntity<?> createElement(@RequestBody final Country element){
         final Country savedElement = repository.save(element);
