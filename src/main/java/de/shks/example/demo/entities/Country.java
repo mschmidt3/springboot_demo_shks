@@ -119,4 +119,18 @@ public class Country {
     public Country() {
     }
 
+    public Country(String name, String alpha2code, String alpha3code, String capital, String region, String subregion,
+        Long population, String flag, String continent) {
+        this.name = name;
+        this.alpha2code = alpha2code;
+        this.alpha3code = alpha3code;
+        this.capital = capital;
+        this.region = region;
+        this.subregion = subregion;
+        this.population = population;
+        this.flag = flag;
+        this.continent = continent;
+    }
+
+
 }
