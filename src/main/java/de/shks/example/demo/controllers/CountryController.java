@@ -2,6 +2,7 @@ package de.shks.example.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -11,6 +12,7 @@ import de.shks.example.demo.repositories.CountryRepository;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.*;
@@ -18,6 +20,8 @@ import org.slf4j.*;
 @RestController
 @RequestMapping("/api/countries")
 public class CountryController {
+    Logger log = LoggerFactory.getLogger(CountryController.class);
+
     @Autowired
     CountryRepository repository;
     
@@ -85,5 +89,52 @@ public class CountryController {
  
         return ResponseEntity.noContent().build();
     }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> partialUpdateGeneric(
+        @RequestBody final Map<String, Object> updates,
+        @PathVariable("id") final Long id) {
+            final Optional<Country> elementOptional = repository.findById(id);
+ 
+            if (!elementOptional.isPresent()){
+                return ResponseEntity.notFound().build();
+            }
+            final Country element = elementOptional.get();
+
+            element.setId(id);
+            for(final Map.Entry<String, Object> entry : updates.entrySet()){
+                log.info("   key:" + entry.getKey() + " val:"+ entry.getValue());
+
+                if(entry.getKey().equals("population")){
+                    element.setPopulation( Long.parseLong(entry.getValue().toString()) );
+                }
+                if(entry.getKey().equals("alpha2code")){
+                    element.setAlpha2code( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("alpha3code")){
+                    element.setAlpha3code( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("capital")){
+                    element.setCapital( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("region")){
+                    element.setRegion( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("subregion")){
+                    element.setSubregion( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("flag")){
+                    element.setFlag( entry.getValue().toString() );
+                }
+                if(entry.getKey().equals("subregion")){
+                    element.setContinent( entry.getValue().toString() );
+                }
+
+            }
+            repository.save(element);
+            
+        return ResponseEntity.ok("resource updated");
+    }
+
 
 }
