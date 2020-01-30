@@ -17,6 +17,7 @@ public class CountryDataInitializer implements ApplicationRunner{
     public void run(ApplicationArguments args) throws Exception {
         
         repository.save(new Country("Deutschland", "DE", "DEU", "Berlin", null) );
+   
         repository.save(new Country("Frankreich", "FR", "FRA", null, null) );
         repository.save(new Country("England", "EN", "ENG", null, null) );
 

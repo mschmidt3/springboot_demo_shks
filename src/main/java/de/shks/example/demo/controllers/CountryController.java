@@ -54,4 +54,38 @@ public class CountryController {
         return ResponseEntity.created(location).build();
     
     }
+
+    // ---------------------------------------------------------------------------------
+    
+    @GetMapping("/find")
+    public ResponseEntity<?> byCode( @RequestParam(value="code") final String code ){
+        final Optional<Country> element;
+        if(code.length()==2){
+            element = repository.findByAlpha2code(code.toUpperCase());
+        }else{
+            element = repository.findByAlpha3code(code.toUpperCase());
+        }
+
+        
+        if(!element.isPresent()){
+            return new ResponseEntity<String>("Element not Found", HttpStatus.NOT_FOUND); 
+        }
+        return new ResponseEntity<Country>(element.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> update(@RequestBody final Country element, @PathVariable final long id) {
+        final Optional<Country> elementOptional = repository.findById(id);
+ 
+        if (!elementOptional.isPresent()){
+            return ResponseEntity.notFound().build();
+        }
+ 
+        element.setId(id);
+        
+        repository.save(element);
+ 
+        return ResponseEntity.noContent().build();
+    }
+
 }
